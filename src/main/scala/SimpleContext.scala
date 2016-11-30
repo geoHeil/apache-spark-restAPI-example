@@ -5,7 +5,11 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
-object SimpleContext extends MistJob with SQLSupport {
+trait MyMistLocalJob {
+  def runTheJOb(session: SparkSession, parameters: Map[String, Any]): Map[String, Any]
+}
+
+object SimpleContext extends MistJob with SQLSupport with MyMistLocalJob {
   /** Contains implementation of spark job with ordinary [[org.apache.spark.SparkContext]]
     * Abstract method must be overridden
     *
@@ -15,7 +19,11 @@ object SimpleContext extends MistJob with SQLSupport {
     * @return result of the job
     */
   override def doStuff(parameters: Map[String, Any]): Map[String, Any] = {
-    val numbers: List[BigInt] = parameters("digits").asInstanceOf[List[BigInt]]
+    runTheJOb(session, parameters)
+  }
+
+  override def runTheJOb(session: SparkSession, parameters: Map[String, Any]): Map[String, Any] = {
+    val numbers: Seq[Int] = parameters("digits").asInstanceOf[Seq[Int]]
     val rdd = session.sparkContext.parallelize(numbers)
 
     //val myMapResult = myDf.map { case Row(a, b) => Map("a" -> a, "b" -> b) }.collect
@@ -47,5 +55,17 @@ object DirectRunner extends App {
     .getOrCreate()
 
   //TODO for simple running / debugging of the job I would like to use a run method like this. How can I access / create a spark session?
-  println(SimpleContext.doStuff(parameters))
+  // is this considered elegant using my own interface / method?
+  val result = SimpleContext.runTheJOb(session, parameters)
+
+  // TODO how to actually print the contents?
+  //    val (keys, vals) = result.toSeq.unzip
+  //    vals.foreach(println)
+  //  result.toSeq.foreach(println)
+  //  result.map(println)
+  result.get("result") match {
+    case Some(x) => x.asInstanceOf[Seq[Any]].foreach(println)
+    case None => println("error occurred")
+  }
+  session.stop
 }
