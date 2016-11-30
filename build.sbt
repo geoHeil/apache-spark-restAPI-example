@@ -12,9 +12,6 @@ scalacOptions ++= Seq("-deprecation", "-feature")
 javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled")
 parallelExecution in Test := false
 
-
-//TODO how to easily switch setup betwen sbt run and assembly e.g. using a merge stragety and not provided
-// to support both modi of local run and assembly to jar
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % spark % "provided",
   "org.apache.spark" %% "spark-sql" % spark % "provided",
@@ -23,11 +20,8 @@ libraryDependencies ++= Seq(
 )
 
 mainClass := Some("DirectRunner")
+// http://stackoverflow.com/questions/18838944/how-to-add-provided-dependencies-back-to-run-test-tasks-classpath/21803413#21803413
+run in Compile <<= Defaults.runTask(fullClasspath in Compile, mainClass in(Compile, run), runner in(Compile, run))
 
-//excludedJars in assembly := {
-//  val cp = (fullClasspath in assembly).value
-//  cp filter {f =>
-//    f.data.getName.contains("spark"),
-//    f.data.getName.startsWith("jar_name")
-//  }
-//}
+// exclude not working testcase
+test in assembly := {}
