@@ -7,8 +7,12 @@ class SimpleTest extends FunSuite with SharedSparkContext with DatasetSuiteBase 
     val session = spark
 
     val input: Map[String, Any] = Map("digits" -> Seq(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))
-    val expectedOutput: Map[String, Any] = Map("result" -> Array(3, 6, 9, 12, 15, 18, 21, 24, 27, 0))
-    val result = SimpleContext.runTheJOb(session, input)
-    assert(expectedOutput === result)
+    //    val expectedOutput: Map[String, Any] = Map("result" -> Array(3, 6, 9, 12, 15, 18, 21, 24, 27, 0))
+    val expectedOutput = Array(3, 6, 9, 12, 15, 18, 21, 24, 27, 0)
+    val result = SimpleContext.runTheJOb(session, input).get("result")
+    expectedOutput.foreach(println)
+    println("result")
+    result.foreach(println)
+    assert(expectedOutput.equals(result))
   }
 }
