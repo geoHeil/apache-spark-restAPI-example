@@ -13,10 +13,25 @@ git clone https://github.com/Hydrospheredata/mist.git
 cd mist
 sbt +publishM2
 sbt -DsparkVersion=2.0.2 assembly
-./bin/mist start master --config /TODO/config
+# TODO use correct path here
+./bin/mist start master --config ./configs/mySampleDefault.conf
 ```
   
 *build the job*
-TODO
+```
+sbt assembly
+```
 **run the job locally (without mist)**
-  - execute `sbt run`
+```
+sbt run
+```
+
+**run unit test**
+```
+TODO
+```
+
+**run the job with as an API**
+```
+curl --header "Content-Type: application/json" -X POST http://localhost:2003/api/simple-context --data '{"digits": [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]}'
+```
