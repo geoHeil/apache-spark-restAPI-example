@@ -6,7 +6,7 @@ Version of Spark is 2.0.2.
 **start the server**
 
 - hydrosphere/mist https://github.com/Hydrospheredata/mist.git
-- need to build locally as not on maven central
+- need to build locally current version/ master branch not on maven central
 
 ```
 git clone https://github.com/Hydrospheredata/mist.git
