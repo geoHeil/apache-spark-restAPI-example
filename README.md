@@ -28,7 +28,7 @@ sbt run
 
 **run unit test**
 ```
-TODO
+sbt test
 ```
 
 **run the job with as an API**

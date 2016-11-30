@@ -18,7 +18,8 @@ parallelExecution in Test := false
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % spark % "provided",
   "org.apache.spark" %% "spark-sql" % spark % "provided",
-  "io.hydrosphere" %% "mist" % "0.6.5" % "provided"
+  "io.hydrosphere" %% "mist" % "0.6.5" % "provided",
+  "com.holdenkarau" %% "spark-testing-base" % "2.0.2_0.4.7" % "test"
 )
 
 mainClass := Some("DirectRunner")
