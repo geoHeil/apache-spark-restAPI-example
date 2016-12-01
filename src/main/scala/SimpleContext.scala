@@ -47,6 +47,7 @@ object DirectRunner extends App {
     .set("spark.default.parallelism", "4")
     .set("spark.driver.memory", "1G")
     .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    //    .set("spark.kryo.registrationRequired", "true")
     .registerKryoClasses(Array(classOf[Date]))
 
   val session: SparkSession = SparkSession
