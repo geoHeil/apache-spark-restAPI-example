@@ -59,14 +59,6 @@ object DirectRunner extends App {
   // is this considered elegant using my own interface / method?
   val result = SimpleContext.runTheJOb(session, parameters)
 
-  // TODO how to actually print the contents?
-  //    val (keys, vals) = result.toSeq.unzip
-  //    vals.foreach(println)
-  //  result.toSeq.foreach(println)
-  //  result.map(println)
-  result.get("result") match {
-    case Some(x) => x.asInstanceOf[Seq[Any]].foreach(println)
-    case None => println("error occurred")
-  }
+  result.get("result").toSeq.asInstanceOf[List[Array[Int]]].flatten.foreach(println)
   session.stop
 }

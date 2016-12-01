@@ -10,9 +10,11 @@ class SimpleTest extends FunSuite with SharedSparkContext with DatasetSuiteBase 
     val expectedOutput: Map[String, Any] = Map("result" -> Array(3, 6, 9, 12, 15, 18, 21, 24, 27, 0))
     //    val expectedOutput = Array(3, 6, 9, 12, 15, 18, 21, 24, 27, 0)
     val result = SimpleContext.runTheJOb(session, input) //.get("result")
-//    expectedOutput.foreach(println)
-//    println("result")
-//    result.foreach(println)
-    assert(expectedOutput.equals(result))
+
+    expectedOutput.get("result").toSeq.asInstanceOf[List[Array[Int]]].flatten.foreach(println)
+    result.get("result").toSeq.asInstanceOf[List[Array[Int]]].flatten.foreach(println)
+
+    // TODO too much casting / hack but works
+    assert(expectedOutput.get("result").toSeq.asInstanceOf[List[Array[Int]]].flatten.equals(result.get("result").toSeq.asInstanceOf[List[Array[Int]]].flatten))
   }
 }
